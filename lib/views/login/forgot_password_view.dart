@@ -6,8 +6,29 @@ import 'package:student_personal_assistant/components/custom_text.dart';
 import 'package:student_personal_assistant/components/custom_text_field.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
 
-class ForgotPasswordView extends StatelessWidget {
+class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
+
+  @override
+  State<ForgotPasswordView> createState() => _ForgotPasswordViewState();
+}
+
+class _ForgotPasswordViewState extends State<ForgotPasswordView> {
+  late final TextEditingController _email;
+
+  @override
+  void initState() {
+    _email = TextEditingController();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +55,8 @@ class ForgotPasswordView extends StatelessWidget {
               const SizedBox(
                 height: 41,
               ),
-              const CustomTextField(labelText: "Your email address"),
+              CustomTextField(
+                  controller: _email, labelText: "Your email address"),
               const SizedBox(
                 height: 22,
               ),
