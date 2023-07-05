@@ -10,6 +10,7 @@ import 'package:student_personal_assistant/components/custom_text_field.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
 
 import '../../firebase_options.dart';
+import '../../utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -91,27 +92,47 @@ class _LoginViewState extends State<LoginView> {
                                   final email = _email.text;
                                   final password = _password.text;
                                   try {
-                                    final userCredential = await FirebaseAuth
-                                        .instance
+                                    await FirebaseAuth.instance
                                         .signInWithEmailAndPassword(
                                             email: email, password: password);
 
-                                    print(userCredential);
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(
-                                            setupRoute, (_) => false);
+                                    final user =
+                                        FirebaseAuth.instance.currentUser;
+                                    if (user?.emailVerified ?? false) {
+                                      //usr's email is verified
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                              setupRoute, (_) => false);
+                                    } else {
+                                      //user's email is NOT verified
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                              verifyEmailRoute,
+                                              (route) => false);
+                                    }
                                   } on FirebaseAuthException catch (e) {
                                     if (e.code == 'user-not-found') {
-                                      print('User not found');
+                                      await showErrorDialog(
+                                        context,
+                                        'user-not-found',
+                                      );
                                     } else if (e.code == 'wrong-password') {
-                                      print('Wrong password');
+                                      await showErrorDialog(
+                                        context,
+                                        'Wrong credentials',
+                                      );
+                                    } else {
+                                      await showErrorDialog(
+                                        context,
+                                        'Error: ${e.code}',
+                                      );
                                     }
+                                  } catch (e) {
+                                    await showErrorDialog(
+                                      context,
+                                      e.toString(),
+                                    );
                                   }
-                                  // catch (e) {
-                                  //   print("Something bad happend");
-                                  //   print(e.runtimeType);
-                                  //   print(e);
-                                  // }
                                 }),
                             CustomTextButton(
                                 text: "Forgot Password?",

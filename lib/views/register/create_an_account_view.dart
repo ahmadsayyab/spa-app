@@ -7,6 +7,7 @@ import 'package:student_personal_assistant/components/custom_text.dart';
 import 'package:student_personal_assistant/components/custom_text_field.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:student_personal_assistant/utilities/show_error_dialog.dart';
 import '../../firebase_options.dart';
 
 class CreateAnAccountView extends StatefulWidget {
@@ -99,20 +100,41 @@ class _CreateAnAccountViewState extends State<CreateAnAccountView> {
                         final password = _password.text;
 
                         try {
-                          final userCredential = await FirebaseAuth.instance
+                          await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
                                   email: email, password: password);
 
-                          print(userCredential);
+                          final user = FirebaseAuth.instance.currentUser;
+                          await user?.sendEmailVerification();
+
                           Navigator.of(context).pushNamed(verifyEmailRoute);
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
-                            print('Weak password');
+                            await showErrorDialog(
+                              context,
+                              'Weak password: Enter a strong password',
+                            );
                           } else if (e.code == 'email-already-in-use') {
-                            print('Email is already in use');
+                            await showErrorDialog(
+                              context,
+                              'This email is already in use',
+                            );
                           } else if (e.code == 'invalid-email') {
-                            print('Invalid email entered');
+                            await showErrorDialog(
+                              context,
+                              'This is an invalid email address',
+                            );
+                          } else {
+                            await showErrorDialog(
+                              context,
+                              'Error: ${e.code}',
+                            );
                           }
+                        } catch (e) {
+                          await showErrorDialog(
+                            context,
+                            e.toString(),
+                          );
                         }
                       },
                     ),
