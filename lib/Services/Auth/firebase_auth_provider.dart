@@ -1,11 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:student_personal_assistant/Services/Auth/Auth_exceptions.dart';
 import 'package:student_personal_assistant/Services/Auth/auth_provider.dart';
 import 'package:student_personal_assistant/Services/Auth/auth_user.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
+import 'package:student_personal_assistant/firebase_options.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   @override
   Future<AuthUser> createUser({
     //required String firstName,

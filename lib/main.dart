@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:student_personal_assistant/constants/colors.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
 import 'package:student_personal_assistant/views/views_import.dart';
-//import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'SPA',

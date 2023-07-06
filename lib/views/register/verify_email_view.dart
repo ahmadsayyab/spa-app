@@ -1,13 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:student_personal_assistant/Services/Auth/auth_service.dart';
 import 'package:student_personal_assistant/components/custom_button.dart';
 import 'package:student_personal_assistant/components/custom_heading.dart';
 import 'package:student_personal_assistant/components/custom_text.dart';
 import 'package:student_personal_assistant/components/custom_text_button.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
 
-import '../../firebase_options.dart';
 import '../login/login_view.dart';
 import '../setup/set_weekly_timetable_view.dart';
 
@@ -20,15 +18,14 @@ class VerifyEmailView extends StatelessWidget {
       appBar: AppBar(),
       body: Center(
         child: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform,
-          ),
+          future: AuthService.firebase().initialize(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
-                final user = FirebaseAuth.instance.currentUser;
+                final user = AuthService.firebase().currentUser;
+                //FirebaseAuth.instance.currentUser;
                 if (user != null) {
-                  if (user.emailVerified) {
+                  if (user.isEmailVerified) {
                     //print('Email is verified');
                     return const SetWeeklyTimetableView();
                   } else {
@@ -50,8 +47,11 @@ class VerifyEmailView extends StatelessWidget {
                         CustomButton(
                           buttonText: "Send me verification email again",
                           onPressed: () async {
-                            final user = FirebaseAuth.instance.currentUser;
-                            await user?.sendEmailVerification();
+                            // final user = AuthService.firebase().currentUser;
+                            //FirebaseAuth.instance.currentUser;
+                            //await user?.sendEmailVerification();
+                            await AuthService.firebase()
+                                .sendEmailVerification();
                           },
                           isSecondary: true,
                         ),
