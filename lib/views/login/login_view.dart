@@ -1,5 +1,3 @@
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:student_personal_assistant/Services/Auth/Auth_exceptions.dart';
 import 'package:student_personal_assistant/Services/Auth/auth_service.dart';
@@ -10,8 +8,6 @@ import 'package:student_personal_assistant/components/custom_text.dart';
 import 'package:student_personal_assistant/components/custom_text_button.dart';
 import 'package:student_personal_assistant/components/custom_text_field.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
-
-//import '../../firebase_options.dart';
 import '../../utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {

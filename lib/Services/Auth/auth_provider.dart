@@ -1,6 +1,8 @@
 import 'package:student_personal_assistant/Services/Auth/auth_user.dart';
 
 abstract class AuthProvider {
+  Future addUserCredentials(
+      String fName, String lName, String email, String password);
   Future<void> initialize();
   AuthUser? get currentUser;
   Future<AuthUser> logIn({

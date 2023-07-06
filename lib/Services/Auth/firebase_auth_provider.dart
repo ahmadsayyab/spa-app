@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:student_personal_assistant/Services/Auth/Auth_exceptions.dart';
 import 'package:student_personal_assistant/Services/Auth/auth_provider.dart';
@@ -102,5 +105,16 @@ class FirebaseAuthProvider implements AuthProvider {
     } else {
       throw UserNotFoundAuthException();
     }
+  }
+
+  @override
+  Future addUserCredentials(
+      String fName, String lName, String email, String password) async {
+    await FirebaseFirestore.instance.collection('Users').add({
+      'first name': fName,
+      'last Name': lName,
+      'Email': email,
+      'Password': password,
+    });
   }
 }

@@ -1,4 +1,3 @@
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:student_personal_assistant/Services/Auth/Auth_exceptions.dart';
 import 'package:student_personal_assistant/Services/Auth/auth_service.dart';
@@ -8,9 +7,7 @@ import 'package:student_personal_assistant/components/custom_heading.dart';
 import 'package:student_personal_assistant/components/custom_text.dart';
 import 'package:student_personal_assistant/components/custom_text_field.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_personal_assistant/utilities/show_error_dialog.dart';
-//import '../../firebase_options.dart';
 
 class CreateAnAccountView extends StatefulWidget {
   const CreateAnAccountView({super.key});
@@ -99,11 +96,16 @@ class _CreateAnAccountViewState extends State<CreateAnAccountView> {
                         final email = _email.text;
                         final password = _password.text;
 
+                        //creating a user
                         try {
                           await AuthService.firebase().createUser(
                             email: email,
                             password: password,
                           );
+
+                          //adding user's credentials to database
+                          AuthService.firebase().addUserCredentials(
+                              fName, lName, email, password);
 
                           AuthService.firebase().sendEmailVerification();
 
@@ -131,6 +133,7 @@ class _CreateAnAccountViewState extends State<CreateAnAccountView> {
                         }
                       },
                     ),
+
                     const SizedBox(height: 169),
                     CustomButton(
                       buttonText: "Already have an account? Log in",

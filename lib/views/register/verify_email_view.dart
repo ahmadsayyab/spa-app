@@ -5,7 +5,6 @@ import 'package:student_personal_assistant/components/custom_heading.dart';
 import 'package:student_personal_assistant/components/custom_text.dart';
 import 'package:student_personal_assistant/components/custom_text_button.dart';
 import 'package:student_personal_assistant/constants/routes.dart';
-
 import '../login/login_view.dart';
 import '../setup/set_weekly_timetable_view.dart';
 
@@ -47,9 +46,6 @@ class VerifyEmailView extends StatelessWidget {
                         CustomButton(
                           buttonText: "Send me verification email again",
                           onPressed: () async {
-                            // final user = AuthService.firebase().currentUser;
-                            //FirebaseAuth.instance.currentUser;
-                            //await user?.sendEmailVerification();
                             await AuthService.firebase()
                                 .sendEmailVerification();
                           },
